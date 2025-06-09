@@ -9,22 +9,22 @@ namespace SmartGrades.Infrastructure.Persistence
         {
         }
 
-        public DbSet<Estudiante> Estudiantes { get; set; }
-        public DbSet<Profesor> Profesores { get; set; }
-        public DbSet<Nota> Notas { get; set; }
+        public DbSet<Student> Estudiantes { get; set; }
+        public DbSet<Teacher> Profesores { get; set; }
+        public DbSet<Grade> Notas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Configuración de relaciones con Fluent API:
-            modelBuilder.Entity<Estudiante>()
-                .HasMany(e => e.Notas)
-                .WithOne(n => n.Estudiante)
-                .HasForeignKey(n => n.IdEstudiante);
+            modelBuilder.Entity<Student>()
+                .HasMany(e => e.Grades)
+                .WithOne(n => n.Student)
+                .HasForeignKey(n => n.IdStudent);
 
-            modelBuilder.Entity<Profesor>()
-                .HasMany(p => p.Notas)
-                .WithOne(n => n.Profesor)
-                .HasForeignKey(n => n.IdProfesor);
+            modelBuilder.Entity<Teacher>()
+                .HasMany(p => p.Grades)
+                .WithOne(n => n.Teacher)
+                .HasForeignKey(n => n.IdTeacher);
 
             base.OnModelCreating(modelBuilder);
         }

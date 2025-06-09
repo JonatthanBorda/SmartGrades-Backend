@@ -10,10 +10,10 @@ namespace SmartGrades.WebApi.Controllers
     [Route("api/[controller]")]
     public class ProfesoresController : ControllerBase
     {
-        private readonly IProfesorService _profesorService;
+        private readonly ITeacherService _profesorService;
         private readonly IMapper _mapper;
 
-        public ProfesoresController(IProfesorService profesorService, IMapper mapper)
+        public ProfesoresController(ITeacherService profesorService, IMapper mapper)
         {
             _profesorService = profesorService;
             _mapper = mapper;
@@ -23,7 +23,7 @@ namespace SmartGrades.WebApi.Controllers
         public async Task<IActionResult> GetAll()
         {
             var profesores = await _profesorService.GetAllAsync();
-            var profesoresDTO = _mapper.Map<IEnumerable<ProfesorDTO>>(profesores);
+            var profesoresDTO = _mapper.Map<IEnumerable<TeacherDTO>>(profesores);
             return Ok(profesoresDTO);
         }
 
@@ -32,24 +32,24 @@ namespace SmartGrades.WebApi.Controllers
         {
             var profesor = await _profesorService.GetByIdAsync(id);
             if (profesor == null) return NotFound();
-            var profesorDTO = _mapper.Map<ProfesorDTO>(profesor);
+            var profesorDTO = _mapper.Map<TeacherDTO>(profesor);
             return Ok(profesorDTO);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ProfesorCreateDTO profesorCreateDTO)
+        public async Task<IActionResult> Post([FromBody] TeacherCreateDTO profesorCreateDTO)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var profesor = _mapper.Map<Profesor>(profesorCreateDTO);
+            var profesor = _mapper.Map<Teacher>(profesorCreateDTO);
             await _profesorService.AddAsync(profesor);
-            var profesorResult = _mapper.Map<ProfesorDTO>(profesor);
+            var profesorResult = _mapper.Map<TeacherDTO>(profesor);
             return CreatedAtAction(nameof(Get), new { id = profesor.Id }, profesorResult);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] ProfesorDTO profesorDTO)
+        public async Task<IActionResult> Put(int id, [FromBody] TeacherDTO profesorDTO)
         {
             if (id != profesorDTO.Id)
                 return BadRequest();
@@ -57,7 +57,7 @@ namespace SmartGrades.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var profesor = _mapper.Map<Profesor>(profesorDTO);
+            var profesor = _mapper.Map<Teacher>(profesorDTO);
             await _profesorService.UpdateAsync(profesor);
             return NoContent();
         }

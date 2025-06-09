@@ -16,16 +16,16 @@ namespace SmartGrades.Application.Mapping
         public MappingProfile()
         {
             //Estudiante:
-            CreateMap<Estudiante, EstudianteDTO>().ReverseMap();
-            CreateMap<Estudiante, EstudianteCreateDTO>().ReverseMap();
+            CreateMap<Student, StudentDTO>().ReverseMap();
+            CreateMap<Student, StudentCreateDTO>().ReverseMap();
             
             //Profesor:
-            CreateMap<Profesor, ProfesorDTO>().ReverseMap();
-            CreateMap<Profesor, ProfesorCreateDTO>().ReverseMap();
+            CreateMap<Teacher, TeacherDTO>().ReverseMap();
+            CreateMap<Teacher, TeacherCreateDTO>().ReverseMap();
 
             //Nota:
-            CreateMap<Nota, NotaDTO>().ReverseMap();
-            CreateMap<Nota, NotaCreateDTO>().ReverseMap();
+            CreateMap<Grade, GradeDTO>().ReverseMap();
+            CreateMap<Grade, GradeCreateDTO>().ReverseMap();
         }
     }
 }

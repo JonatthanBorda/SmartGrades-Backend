@@ -13,16 +13,16 @@ namespace SmartGrades.Infrastructure.Repositories
     {
         private readonly AppDbContext _context;
 
-        public IRepository<Estudiante> Estudiantes { get; }
-        public IRepository<Profesor> Profesores { get; }
-        public IRepository<Nota> Notas { get; }
+        public IRepository<Student> Students { get; }
+        public IRepository<Teacher> Teachers { get; }
+        public IRepository<Grade> Grades { get; }
 
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
-            Estudiantes = new Repository<Estudiante>(_context);
-            Profesores = new Repository<Profesor>(_context);
-            Notas = new Repository<Nota>(_context);
+            Students = new Repository<Student>(_context);
+            Teachers = new Repository<Teacher>(_context);
+            Grades = new Repository<Grade>(_context);
         }
 
         public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();

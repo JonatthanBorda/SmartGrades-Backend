@@ -11,56 +11,56 @@ using System.Threading.Tasks;
 
 namespace SmartGrades.Application.Services
 {
-    public class ProfesorService : IProfesorService
+    public class TeacherService : ITeacherService
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public ProfesorService(IUnitOfWork unitOfWork)
+        public TeacherService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Profesor>> GetAllAsync()
+        public async Task<IEnumerable<Teacher>> GetAllAsync()
         {
-            return await _unitOfWork.Profesores.GetAllAsync();
+            return await _unitOfWork.Teachers.GetAllAsync();
         }
 
-        public async Task<Profesor> GetByIdAsync(int id)
+        public async Task<Teacher> GetByIdAsync(int id)
         {
-            return await _unitOfWork.Profesores.GetByIdAsync(id);
+            return await _unitOfWork.Teachers.GetByIdAsync(id);
         }
 
-        public async Task AddAsync(Profesor profesor)
+        public async Task AddAsync(Teacher teacher)
         {
-            await _unitOfWork.Profesores.AddAsync(profesor);
+            await _unitOfWork.Teachers.AddAsync(teacher);
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task UpdateAsync(Profesor profesor)
+        public async Task UpdateAsync(Teacher teacher)
         {
-            _unitOfWork.Profesores.Update(profesor);
+            _unitOfWork.Teachers.Update(teacher);
             await _unitOfWork.CompleteAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var profesor = await _unitOfWork.Profesores.GetByIdAsync(id);
-            if (profesor != null)
+            var teacher = await _unitOfWork.Teachers.GetByIdAsync(id);
+            if (teacher != null)
             {
-                _unitOfWork.Profesores.Remove(profesor);
+                _unitOfWork.Teachers.Remove(teacher);
                 await _unitOfWork.CompleteAsync();
             }
         }
 
-        public async Task<DTOs.PagedResult<Profesor>> GetFilteredAsync(string? nombre, string? orderBy = "Id", 
+        public async Task<DTOs.PagedResult<Teacher>> GetFilteredAsync(string? name, string? orderBy = "Id", 
                                                                     bool desc = false,
                                                                     int page = 1, 
                                                                     int pageSize = 10)
         {
-            var query = _unitOfWork.Profesores.Query();
+            var query = _unitOfWork.Teachers.Query();
 
-            if (!string.IsNullOrEmpty(nombre))
-                query = query.Where(p => p.Nombre.Contains(nombre));
+            if (!string.IsNullOrEmpty(name))
+                query = query.Where(p => p.Name.Contains(name));
 
             query = query.OrderBy($"{orderBy} {(desc ? "descending" : "ascending")}");
 
@@ -68,7 +68,7 @@ namespace SmartGrades.Application.Services
 
             var items = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
-            return new DTOs.PagedResult<Profesor>
+            return new DTOs.PagedResult<Teacher>
             {
                 Items = items,
                 TotalCount = total,

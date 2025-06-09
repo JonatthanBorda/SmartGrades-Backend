@@ -11,10 +11,10 @@ namespace SmartGrades.WebApi.Controllers
     [Route("api/[controller]")]
     public class NotasController : ControllerBase
     {
-        private readonly INotaService _notaService;
+        private readonly IGradeService _notaService;
         private readonly IMapper _mapper;
 
-        public NotasController(INotaService notaService, IMapper mapper)
+        public NotasController(IGradeService notaService, IMapper mapper)
         {
             _notaService = notaService;
             _mapper = mapper;
@@ -24,7 +24,7 @@ namespace SmartGrades.WebApi.Controllers
         public async Task<IActionResult> GetAll()
         {
             var notas = await _notaService.GetAllAsync();
-            var notasDTO = _mapper.Map<IEnumerable<NotaDTO>>(notas);
+            var notasDTO = _mapper.Map<IEnumerable<GradeDTO>>(notas);
             return Ok(notasDTO);
         }
 
@@ -33,24 +33,24 @@ namespace SmartGrades.WebApi.Controllers
         {
             var nota = await _notaService.GetByIdAsync(id);
             if (nota == null) return NotFound();
-            var notaDTO = _mapper.Map<NotaDTO>(nota);
+            var notaDTO = _mapper.Map<GradeDTO>(nota);
             return Ok(notaDTO);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] NotaCreateDTO notaCreateDTO)
+        public async Task<IActionResult> Post([FromBody] GradeCreateDTO notaCreateDTO)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var nota = _mapper.Map<Nota>(notaCreateDTO);
+            var nota = _mapper.Map<Grade>(notaCreateDTO);
             await _notaService.AddAsync(nota);
-            var notaResult = _mapper.Map<NotaDTO>(nota);
+            var notaResult = _mapper.Map<GradeDTO>(nota);
             return CreatedAtAction(nameof(Get), new { id = nota.Id }, notaResult);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] NotaDTO notaDTO)
+        public async Task<IActionResult> Put(int id, [FromBody] GradeDTO notaDTO)
         {
             if (id != notaDTO.Id)
                 return BadRequest();
@@ -58,7 +58,7 @@ namespace SmartGrades.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var nota = _mapper.Map<Nota>(notaDTO);
+            var nota = _mapper.Map<Grade>(notaDTO);
             await _notaService.UpdateAsync(nota);
             return NoContent();
         }
@@ -74,7 +74,7 @@ namespace SmartGrades.WebApi.Controllers
         public async Task<IActionResult> GetNotasByEstudiante(int idEstudiante)
         {
             var notas = await _notaService.GetNotasByEstudianteAsync(idEstudiante);
-            var dtoNotas = _mapper.Map<IEnumerable<NotaDTO>>(notas);
+            var dtoNotas = _mapper.Map<IEnumerable<GradeDTO>>(notas);
             return Ok(dtoNotas);
         }
 
@@ -82,7 +82,7 @@ namespace SmartGrades.WebApi.Controllers
         public async Task<IActionResult> GetNotasByProfesor(int idProfesor)
         {
             var notas = await _notaService.GetNotasByProfesorAsync(idProfesor);
-            var dtoNotas = _mapper.Map<IEnumerable<NotaDTO>>(notas);
+            var dtoNotas = _mapper.Map<IEnumerable<GradeDTO>>(notas);
             return Ok(dtoNotas);
         }
 

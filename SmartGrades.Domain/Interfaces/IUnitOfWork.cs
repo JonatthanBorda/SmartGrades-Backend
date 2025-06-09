@@ -9,9 +9,9 @@ namespace SmartGrades.Domain.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<Estudiante> Estudiantes { get; }
-        IRepository<Profesor> Profesores { get; }
-        IRepository<Nota> Notas { get; }
+        IRepository<Student> Students { get; }
+        IRepository<Teacher> Teachers { get; }
+        IRepository<Grade> Grades { get; }
         Task<int> CompleteAsync();
     }
 }
