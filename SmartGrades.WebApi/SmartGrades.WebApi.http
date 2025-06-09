@@ -1,0 +1,6 @@
+@SmartGrades.WebApi_HostAddress = http://localhost:5080
+
+GET {{SmartGrades.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
