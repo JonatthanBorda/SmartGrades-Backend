@@ -11,7 +11,7 @@ namespace SmartGrades.Domain.Interfaces
     {
         IRepository<Student> Students { get; }
         IRepository<Teacher> Teachers { get; }
-        IRepository<Grade> Grades { get; }
+        IGradeRepository Grades { get; }
         Task<int> CompleteAsync();
     }
 }

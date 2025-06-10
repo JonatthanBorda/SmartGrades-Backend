@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SmartGrades.Application.DTOs.Estudiante;
+using SmartGrades.Application.DTOs.Profesor;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartGrades.Application.DTOs.Nota
 {
@@ -14,10 +16,10 @@ namespace SmartGrades.Application.DTOs.Nota
         [Range(0, 5, ErrorMessage = "El valor de la nota debe estar entre 0 y 5.")]
         public decimal Value { get; set; }
 
-        [Required(ErrorMessage = "El id del estudiante es obligatorio.")]
-        public int IdStudent { get; set; }
+        [Required(ErrorMessage = "El estudiante es obligatorio.")]
+        public StudentDTO Student { get; set; }
 
-        [Required(ErrorMessage = "El id del profesor es obligatorio.")]
-        public int IdTeacher { get; set; }
+        [Required(ErrorMessage = "El profesor es obligatorio.")]
+        public TeacherDTO Teacher { get; set; }
     }
 }

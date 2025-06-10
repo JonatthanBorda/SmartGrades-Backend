@@ -15,14 +15,14 @@ namespace SmartGrades.Infrastructure.Repositories
 
         public IRepository<Student> Students { get; }
         public IRepository<Teacher> Teachers { get; }
-        public IRepository<Grade> Grades { get; }
+        public IGradeRepository Grades { get; }
 
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
             Students = new Repository<Student>(_context);
             Teachers = new Repository<Teacher>(_context);
-            Grades = new Repository<Grade>(_context);
+            Grades = new GradeRepository(_context);
         }
 
         public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();

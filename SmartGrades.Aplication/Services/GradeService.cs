@@ -16,7 +16,7 @@ namespace SmartGrades.Application.Services
 
         public async Task<IEnumerable<Grade>> GetAllAsync()
         {
-            return await _unitOfWork.Grades.GetAllAsync();
+            return await _unitOfWork.Grades.GetAllWithTeacherAndStudentAsync();
         }
 
         public async Task<Grade> GetByIdAsync(int id)

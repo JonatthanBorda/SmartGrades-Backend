@@ -24,8 +24,10 @@ namespace SmartGrades.Application.Mapping
             CreateMap<Teacher, TeacherCreateDTO>().ReverseMap();
 
             //Nota:
-            CreateMap<Grade, GradeDTO>().ReverseMap();
-            CreateMap<Grade, GradeCreateDTO>().ReverseMap();
+            CreateMap<Grade, GradeDTO>()
+            .ForMember(dest => dest.Student, opt => opt.MapFrom(src => src.Student))
+            .ForMember(dest => dest.Teacher, opt => opt.MapFrom(src => src.Teacher))
+            .ReverseMap();
         }
     }
 }

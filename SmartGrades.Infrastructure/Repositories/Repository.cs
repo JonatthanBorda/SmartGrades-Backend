@@ -12,7 +12,7 @@ namespace SmartGrades.Infrastructure.Repositories
     public class Repository<T> : IRepository<T> where T : class
     {
         protected readonly DbContext _context;
-        private readonly DbSet<T> _entities;
+        protected readonly DbSet<T> _entities;
 
         public Repository(DbContext context)
         {
