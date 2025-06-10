@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SmartGrades.Application.DTOs.Grade;
 using SmartGrades.Application.DTOs.Nota;
 using SmartGrades.Application.Interfaces;
 using SmartGrades.Application.Services;
@@ -49,12 +50,9 @@ namespace SmartGrades.WebApi.Controllers
             return CreatedAtAction(nameof(Get), new { id = grade.Id }, gradeResult);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] GradeDTO gradeDTO)
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] GradeUpdateDTO gradeDTO)
         {
-            if (id != gradeDTO.Id)
-                return BadRequest();
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 

@@ -21,6 +21,6 @@ namespace SmartGrades.Application.DTOs.Grade
 
     public record TeacherDTOs(
         int Id,
-        String Name
+        string Name
     );
 }

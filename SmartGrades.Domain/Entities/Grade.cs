@@ -14,9 +14,9 @@ namespace SmartGrades.Domain.Entities
 
         //Llaves foráneas a Estudiante y Profesor:
         public int IdStudent { get; set; }
-        public required Student Student { get; set; }
+        public Student? Student { get; set; }
 
         public int IdTeacher { get; set; }
-        public required Teacher Teacher { get; set; }
+        public Teacher? Teacher { get; set; }
     }
 }
