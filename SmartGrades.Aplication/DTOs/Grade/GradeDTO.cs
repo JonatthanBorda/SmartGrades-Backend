@@ -21,5 +21,14 @@ namespace SmartGrades.Application.DTOs.Nota
 
         [Required(ErrorMessage = "El profesor es obligatorio.")]
         public TeacherDTO Teacher { get; set; }
+
+        public GradeDTO(int id, string name, decimal value, StudentDTO student, TeacherDTO teacher)
+        {
+            Id = id;
+            Name = name;
+            Value = value;
+            Student = student;
+            Teacher = teacher;
+        }
     }
 }

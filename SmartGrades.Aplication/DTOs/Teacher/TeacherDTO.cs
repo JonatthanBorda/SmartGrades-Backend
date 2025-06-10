@@ -14,5 +14,11 @@ namespace SmartGrades.Application.DTOs.Profesor
         [Required(ErrorMessage = "El nombre es obligatorio.")]
         [MaxLength(100, ErrorMessage = "El nombre no puede exceder 100 caracteres.")]
         public required string Name { get; set; }
+
+        public TeacherDTO(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
     }
 }

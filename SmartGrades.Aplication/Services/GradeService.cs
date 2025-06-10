@@ -1,4 +1,8 @@
-﻿using SmartGrades.Application.Interfaces;
+﻿using SmartGrades.Application.DTOs.Estudiante;
+using SmartGrades.Application.DTOs.Grade;
+using SmartGrades.Application.DTOs.Nota;
+using SmartGrades.Application.DTOs.Profesor;
+using SmartGrades.Application.Interfaces;
 using SmartGrades.Domain.Entities;
 using SmartGrades.Domain.Interfaces;
 using System.Linq.Dynamic.Core;
@@ -19,9 +23,9 @@ namespace SmartGrades.Application.Services
             return await _unitOfWork.Grades.GetAllWithTeacherAndStudentAsync();
         }
 
-        public async Task<Grade> GetByIdAsync(int id)
+        public async Task<Grade?> GetByIdAsync(int id)
         {
-            return await _unitOfWork.Grades.GetByIdAsync(id);
+            return await _unitOfWork.Grades.GetByIdWithTeacherAndStudentAsync(id);
         }
 
         public async Task AddAsync(Grade grade)
@@ -48,15 +52,15 @@ namespace SmartGrades.Application.Services
 
         public async Task<IEnumerable<Grade>> GetNotasByEstudianteAsync(int idEstudiante)
         {
-            return await _unitOfWork.Grades.FindAsync(n => n.IdStudent == idEstudiante);
+            return await _unitOfWork.Grades.FindAsyncWithTeacherAndStudentAsync(n => n.IdStudent == idEstudiante);
         }
 
         public async Task<IEnumerable<Grade>> GetNotasByProfesorAsync(int idProfesor)
         {
-            return await _unitOfWork.Grades.FindAsync(n => n.IdTeacher == idProfesor);
+            return await _unitOfWork.Grades.FindAsyncWithTeacherAndStudentAsync(n => n.IdTeacher == idProfesor);
         }
 
-        public async Task<DTOs.PagedResult<Grade>> GetFilteredAsync(
+        public async Task<DTOs.PagedResult<GradeDTOs>> GetFilteredAsync(
             string? name = null,
             int? idStudent = null,
             int? idTeacher = null,
@@ -66,10 +70,12 @@ namespace SmartGrades.Application.Services
             int pageSize = 10
         )
         {
-            var query = _unitOfWork.Grades.Query();
+            var query = _unitOfWork.Grades.QueryWithTeacherAndStudent();
 
             if (!string.IsNullOrEmpty(name))
-                query = query.Where(n => n.Name.Contains(name));
+                query = query.Where(n =>
+                    n.Name.Contains(name) || n.Teacher.Name.Contains(name) ||
+                    n.Student.Name.Contains(name) || n.Value.ToString().Contains(name));
 
             if (idStudent.HasValue)
                 query = query.Where(n => n.IdStudent == idStudent.Value);
@@ -83,9 +89,23 @@ namespace SmartGrades.Application.Services
 
             var items = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
-            return new DTOs.PagedResult<Grade>
+            var itemList = items.Select(item => new GradeDTOs(
+                                item.Id,
+                                item.Name,
+                                item.Value,
+                                new StudentDTOs(
+                                    item.Student.Id,
+                                    item.Student.Name
+                                ),
+                                new TeacherDTOs(
+                                    item.Teacher.Id,
+                                    item.Teacher.Name
+                                )
+            ));
+
+            return new DTOs.PagedResult<GradeDTOs>
             {
-                Items = items,
+                Items = itemList,
                 TotalCount = total,
                 Page = page,
                 PageSize = pageSize
